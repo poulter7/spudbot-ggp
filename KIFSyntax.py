@@ -4,10 +4,10 @@ main function is quoterm
 
 cf
 
-[KIF] 
+[KIF]
      Knowledge Interchange Format draft proposed American National Standard (dpANS)
      NCITS.T2/98-004
-     Last Modified: Thursday, 25-Jun-98 22:31:37 GMT 
+     Last Modified: Thursday, 25-Jun-98 22:31:37 GMT
 
 http://logic.stanford.edu/kif/dpans.html
 """
@@ -55,7 +55,7 @@ class BadSyntax:
         self._o = offending
     def __str__(self):
         return "at: " + self._o
-    
+
     pass #@@ flesh out
 
 
@@ -73,6 +73,7 @@ def quoterm(str, pos=0, endpos=-1, symNamed=identity):
     if endpos==-1: endpos=len(str)
 
     qt, w = _quoterm(str, pos, endpos, symNamed)
+    qt = filter(None, qt)
     #@@ what to do if w isn't at the end?
 
     return qt
@@ -104,6 +105,7 @@ def _quoterm(str, pos, endpos, symNamed):
     l = listMarkFSM.match(str, pos, endpos)
     if l:
 	res = [()] #@@HACK! list end object kept at 0th item
+    # reverse hack... jonathan
 	at = l.end()
 	while 1:
 	    #print "_quoterm recur after (:", str[at:endpos]
@@ -120,8 +122,9 @@ def _quoterm(str, pos, endpos, symNamed):
 		qt = _quoterm(str, at, endpos, symNamed)
 		t, at = qt
                 if t <> ListEnd: raise BadSyntax, t[at:at+20]
+
 		break
-	    res.append(t)
+	    res.append(filter(None,t))
 
 	if len(res) == 1: res = ()
 	else: res = tuple(res)
@@ -179,5 +182,5 @@ def unitTest():
 	o = quoterm(c)
 	print "out: ", o
 
-    
+
 if __name__ == '__main__': unitTest()
