@@ -1,0 +1,3 @@
+[submodule "yap-udi"]
+	path = yap-udi
+	url = git://github.com/davidvaz/yap-udi/
